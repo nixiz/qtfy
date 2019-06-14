@@ -1,3 +1,12 @@
+/*
+ * RhConditionState.cpp
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #include "RhConditionState.h"
 #include "RhTransitions.hpp"
 //#include "qtfy.hpp"

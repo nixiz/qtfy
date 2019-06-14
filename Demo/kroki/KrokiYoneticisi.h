@@ -11,12 +11,12 @@ class KrokiYoneticisi : public Qtfy, public IKrokiYoneticisi
 {
     Q_OBJECT
 public:
-    typedef Port_T<IKrokiYoneticisi, IKrokiBilgiServisi> KrokiBilgiServisiPortu;
+    typedef Port<IKrokiYoneticisi, IKrokiBilgiServisi> KrokiBilgiServisiPortu;
 
     explicit KrokiYoneticisi(QObject *parent = 0);
     ~KrokiYoneticisi();
 
-    // Kroki yöneticisinin baþlatýlmasýný ve ilgili sýnýflarla baðlantýlarýnýn kurulmasýný tetikler.
+    // Kroki yï¿½neticisinin baï¿½latï¿½lmasï¿½nï¿½ ve ilgili sï¿½nï¿½flarla baï¿½lantï¿½larï¿½nï¿½n kurulmasï¿½nï¿½ tetikler.
     void basla();
 
     void KrokiTalebi();

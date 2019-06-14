@@ -1,3 +1,12 @@
+/*
+ * RhState.h
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #ifndef RHSTATE_H
 #define RHSTATE_H
 

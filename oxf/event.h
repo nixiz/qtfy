@@ -1,3 +1,12 @@
+/*
+ * event.h
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #ifndef OXF_OMEVENT_H
 #define OXF_OMEVENT_H
 

@@ -12,8 +12,8 @@ class KrokiBilgiServisi : public Qtfy, public IKrokiBilgiServisi
 {
     Q_OBJECT
 public:
-    typedef Port_T<IKrokiBilgiServisi, IKrokiYoneticisi> KrokiBilgiServisiPortu;
-    typedef Port_T<EmptyType, IInterface1> InterfaceIPortu;
+    typedef Port<IKrokiBilgiServisi, IKrokiYoneticisi> KrokiBilgiServisiPortu;
+    typedef Port<EmptyType, IInterface1> InterfaceIPortu;
     DECLARE_PORT_OUT(IHaberlesmeYoneticisi) HaberlesmeYoneticisiPortu;
 
     explicit KrokiBilgiServisi(QObject *parent = 0);

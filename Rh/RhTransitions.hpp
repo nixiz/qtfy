@@ -1,3 +1,12 @@
+/*
+ * RhTransitions.hpp
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #ifndef RHTRANSITIONS_HPP
 #define RHTRANSITIONS_HPP
 

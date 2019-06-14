@@ -1,3 +1,12 @@
+/*
+ * QRhapsodyInitializer.h
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #ifndef QRHAPSODYINITIALIZER_H
 #define QRHAPSODYINITIALIZER_H
 

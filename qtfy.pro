@@ -35,7 +35,7 @@ else:win32:CONFIG(release, debug|release|profile): QMAKE_LFLAGS += /SAFESEH /LTC
 else:win32:CONFIG(profile, debug|release|profile): QMAKE_LFLAGS += /SAFESEH /LTCG
 
 
-INCLUDEPATH += .
+INCLUDEPATH += . ./ports/include
 
 SOURCES += \
     Rh/RhTimerState.cpp \

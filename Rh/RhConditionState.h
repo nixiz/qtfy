@@ -1,3 +1,12 @@
+/*
+ * RhConditionState.h
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #ifndef RHCONDITIONSTATE_H
 #define RHCONDITIONSTATE_H
 

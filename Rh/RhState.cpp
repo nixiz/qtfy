@@ -1,5 +1,13 @@
+/*
+ * RhState.cpp
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #include "RhState.h"
-//#include "qtfy.hpp"
 #include <QDebug>
 #include <QList>
 #include <QTimer>

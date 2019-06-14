@@ -1,3 +1,12 @@
+/*
+ * state.h
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #ifndef OXF_OMSTATE_H
 #define OXF_OMSTATE_H
 

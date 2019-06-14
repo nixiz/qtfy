@@ -1,4 +1,12 @@
-#pragma once
+/*
+ * qtfy.hpp
+ *  
+ * Copyright (C) Oguzhan KATLI
+ * All Rights Reserved
+ *
+ * See the LICENSE file for the terms of usage and distribution.
+ *
+ */
 #ifndef Qtfy_T_H
 #define Qtfy_T_H
 
@@ -11,81 +19,17 @@
 #include <QEvent>
 #include <QStateMachine>
 #include <QCoreApplication>
+#include "ports/include/port.hpp"
 #include "Rh/QRhapsodyInitializer.h"
 #include "oxf/event.h"
 
 #define STRINGIFY(s) # s
 #define EXPAND_TO_STRING(x) STRINGIFY(x)
 #define PORT_RHAPSODY(prt) dynamic_cast< QtfyBase* >(prt)
-#define OPORT(prt) PORT_RHAPSODY(prt::out_ptr)
-#define OUT_PORT(prt) OPORT(prt::out_ptr)
-#define PORT(prt) prt::out_ptr
-#define DECLARE_PORT_IN(in) typedef Port_T<in, EmptyType>
-#define DECLARE_PORT_OUT(out) typedef Port_T<EmptyType, out>
-#define DECLARE_PORT_IN_OUT(in, out) typedef Port_T<in, out>
+#define OPORT(prt) PORT_RHAPSODY(prt::OutPtr())
+#define OUT_PORT(prt) OPORT(prt::OutPtr())
 
-/** works in gcc compilers only!
- * #define _GET_OVERRIDE(_1, _2, Name, ...) Name
- * #define DECLARE_PORT(...) _GET_OVERRIDE(__VA_ARGS__, DECLARE_PORT_IN_OUT, DECLARE_PORT_IN)(__VA_ARGS__)
-*/
-#define REGISTER_PORT(Port) PortBinder<Port::InType, Port::OutType>::Register(this)
-
-///
-/// \brief The EmptyType class
-///
-class EmptyType {};
-template <class T> class Qtfy_T;
-
-template <class In, class Out>
-struct Port_T
-{
-    typedef In  InType;
-    typedef Out OutType;
-    static InType  *in_ptr;
-    static OutType *out_ptr;
-};
-template <class In, class Out>
-typename Port_T<In,Out>::InType * Port_T<In,Out>::in_ptr = 0;
-
-template <class In, class Out>
-typename Port_T<In,Out>::OutType * Port_T<In,Out>::out_ptr = 0;
-
-// DECLARE_PORT_IN_OUT(portIn, portOut) makrosu ile tanýmlanmýþ interfaceler için özelleþtirilmiþtir
-// REGISTER_PORT dendiðinde burasý çalýþýr
-template <class In, class Out>
-struct PortBinder
-{
-    template <class Servant>
-    static void Register(Servant * inptr)
-    {
-        Port_T<In, Out>::in_ptr = inptr;
-        Port_T<Out, In>::out_ptr = inptr;
-    }
-};
-
-// DECLARE_PORT_IN(port) makrosu ile tanýmlanmýþ interfaceler için özelleþtirilmiþtir
-// REGISTER_PORT dendiðinde burasý çalýþýr
-template <class In>
-struct PortBinder<In, EmptyType>
-{
-    template <class Servant>
-    static void Register(Servant * inptr)
-    {
-        Port_T<In, EmptyType>::in_ptr = inptr;
-        Port_T<EmptyType, In>::out_ptr = inptr;
-    }
-};
-
-// DECLARE_PORT_OUT(port) makrosu ile tanýmlanmýþ interfaceler için özelleþtirilmiþtir
-// REGISTER_PORT dendiðinde burasý çalýþýr
-template <class Out>
-struct PortBinder<EmptyType, Out>
-{
-    // Out register'lar için bir þey yapmaya gerek yok zaten ilgili
-    // port pair'i in tipindeki sýnýf register ettiðinde oluþacaktýr.
-    static void Register(void *) { }
-};
-
+// template <class T> class Qtfy_T;
 struct MetaTypeRegisterHelper
 {
     template <class T>
@@ -115,7 +59,7 @@ public:
     // Use only with GEN() macro!
     bool CallEvent(EventDispatcherHelper* ev)
     {
-        // calling thread ile nesnenin yaþadýðý thread ayný ise direk call yapýlabilir
+        // calling thread ile nesnenin yaï¿½adï¿½ï¿½ï¿½ thread aynï¿½ ise direk call yapï¿½labilir
         if (isSameThread(QThread::currentThread()))
         {
             HandleEvent(ev);
@@ -123,8 +67,8 @@ public:
         }
         else
         {
-            // TODO(oguzhank): async call kullanýldýðýnda return type void olacaðý için
-            // burada return deðeri olarak neye göre true veya false dönmeliyiz düþün?!
+            // TODO(oguzhank): async call kullanï¿½ldï¿½ï¿½ï¿½nda return type void olacaï¿½ï¿½ iï¿½in
+            // burada return deï¿½eri olarak neye gï¿½re true veya false dï¿½nmeliyiz dï¿½ï¿½ï¿½n?!
             QMetaObject::invokeMethod(
                 this, "HandleEvent", Qt::QueuedConnection,
                 Q_ARG(EventDispatcherHelper*, ev));
@@ -149,7 +93,7 @@ protected:
                    __FUNCTION__,
                    "setActiveContext works with own instance!!");
         if(activeInstance) StartServiceThread();
-        else // TODO(oguzhank): burayý kontrol et! burada sadece StartStateChart() demek yeterli olabilir.
+        else // TODO(oguzhank): burayï¿½ kontrol et! burada sadece StartStateChart() demek yeterli olabilir.
         {
             if (thisobject && !isSameThread(thisobject->thread()))
             {
@@ -215,7 +159,7 @@ private:
     }
 
     inline void StopServiceThread() {
-        // TODO(oguzhank): burasýný kontrol et; doðru sýra bu olmayabilir
+        // TODO(oguzhank): burasï¿½nï¿½ kontrol et; doï¿½ru sï¿½ra bu olmayabilir
         if(!serviceThread.isNull())
         {
             serviceThread->quit();
