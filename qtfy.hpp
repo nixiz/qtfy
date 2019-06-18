@@ -28,6 +28,7 @@
 #define PORT_RHAPSODY(prt) dynamic_cast< QtfyBase* >(prt)
 #define OPORT(prt) PORT_RHAPSODY(prt::OutPtr())
 #define OUT_PORT(prt) OPORT(prt::OutPtr())
+#define setActiveContext(a,b) SetActiveContextRAII activeContextSetter(a,b)
 
 // template <class T> class Qtfy_T;
 struct MetaTypeRegisterHelper
@@ -49,6 +50,20 @@ struct QtfyBase
 template <class Obj>
 class Qtfy_T : public Obj, public QtfyBase {
 public:
+    struct SetActiveContextRAII
+    {
+        typedef Qtfy_T<Obj> QtfyObj;
+        explicit SetActiveContextRAII(QtfyObj *lead, bool activeInstance) : 
+            thisObj(lead), mActiveInstance(activeInstance) {}
+        ~SetActiveContextRAII()
+        {
+            thisObj->__setActiveContext(thisObj, mActiveInstance);
+        }
+    private:
+        QtfyObj *thisObj;
+        bool mActiveInstance;
+    };
+    friend struct SetActiveContextRAII;
     explicit Qtfy_T() { }
 
     template <class T>
@@ -87,27 +102,6 @@ protected Q_SLOTS:
     virtual void ServiceThreadFinished() = 0;
     virtual void ServiceThreadTerminated() = 0;
 protected:
-    void setActiveContext(Obj *thisobject, bool activeInstance)
-    {
-        Q_ASSERT_X(!(activeInstance && thisobject != NULL && thisobject != this),
-                   __FUNCTION__,
-                   "setActiveContext works with own instance!!");
-        if(activeInstance) StartServiceThread();
-        else // TODO(oguzhank): buray� kontrol et! burada sadece StartStateChart() demek yeterli olabilir.
-        {
-            if (thisobject && !isSameThread(thisobject->thread()))
-            {
-                _moveToThread(thisobject->thread());
-            }
-            else
-            {
-                // move to main thread
-                _moveToThread(QCoreApplication::instance()->thread());
-            }
-            StartStateChart();
-        }
-    }
-
     inline QStateMachine& StateChart() { return statechart; }
     inline void PostEvent(QEvent *event, QStateMachine::EventPriority priority = QStateMachine::NormalPriority)
     {
@@ -127,6 +121,27 @@ private:
     QStateMachine statechart;
     QScopedPointer<QThread> serviceThread;
     static MetaTypeRegisterHelper _registerMetaTypes;
+
+    void __setActiveContext(Obj *thisobject, bool activeInstance)
+    {
+        Q_ASSERT_X(!(activeInstance && thisobject != NULL && thisobject != this),
+                   __FUNCTION__,
+                   "setActiveContext works with own instance!!");
+        if(activeInstance) StartServiceThread();
+        else // TODO(oguzhank): buray� kontrol et! burada sadece StartStateChart() demek yeterli olabilir.
+        {
+            if (thisobject && !isSameThread(thisobject->thread()))
+            {
+                _moveToThread(thisobject->thread());
+            }
+            else
+            {
+                // move to main thread
+                _moveToThread(QCoreApplication::instance()->thread());
+            }
+            StartStateChart();
+        }
+    }
 
     inline bool isSameThread(const QThread* otherThread) {
         return this->thread() == otherThread;
